@@ -5,7 +5,7 @@ for line in sys.stdin:
     fileContent += line 
 
 
-def validCheck(file):
+def bracketCheck(file):
     opened = False
     closed = False
     for i in fileContent:
@@ -21,9 +21,10 @@ def validCheck(file):
         return 0
     else:
         return 2
-print(validCheck(fileContent))
+print(bracketCheck(fileContent))
         
 '''
 1 = file doesn't start with a {
+2 = Undefined
 '''
 

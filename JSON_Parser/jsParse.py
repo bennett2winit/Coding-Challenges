@@ -10,7 +10,7 @@ def main(file):
     if bracket > 0:
         print('invalid JSON file: ' + str(bracket))
     elif keyValid > 0:
-        print('invalid JSON file: ' + str(keyValid))
+        print('invalid JSON file: err. no. ' + str(keyValid))
     else:
         print("Valid JSON")
 
@@ -32,6 +32,7 @@ def bracketCheck(file):
         return 2
 
 def keyCheck(file):
+    keyCount = 1
     key = False
     value = False
     keyVal = ''
@@ -39,19 +40,19 @@ def keyCheck(file):
     # Iterate through file to check for key and value combos. ',' resets them so that we can check for multiple values
     for i in file:
         if i == ':':
-            keyNum = checkKey(keyVal)
-            if keyNum > 0:
-                key = False
-            else:
-                key = True
-            checkKey(keyVal)
+            key = checkKey(keyVal)
+            if key == False:
+                print(f"Key Error in line {keyCount}")
+                return 4
             keyVal = ''
         elif i == ',' and key != True:
             print("no key found")
         elif i == ',':
             value = checkValue(valueVal)
             if value == False:
+                print(f"Value Error in line {keyCount}")
                 return 6
+            keyCount += 1
             valueVal = ''
             key = False
             value = False
@@ -59,44 +60,41 @@ def keyCheck(file):
             keyVal += i
         elif key == True and i == "}":
             value = checkValue(valueVal)
-            print(value)
             if value == False:
+                print(f"Value Error in line {keyCount}")
                 return 6
                 break
         elif key == True and i != ',':
             valueVal += i
+    # The final conditional checks to see if, after all the resets, key and value are BOTH true
     if key == True and value == True:
         return 0
     else:
         return 2
 
 def checkValue(val):
+    validVars = ['null', 'true', 'false']
     stringCheck = checkKey(val)
-    if stringCheck == 0:
+    if stringCheck == True:
         return True
-    elif val.strip() == 'null':
-        return False
+    elif val.strip() in validVars:
+        return True
     else:
         try:
             int(val)
             return True
         except:
-            bool(val)
-            return True
-        else:
             return False
-    print("check value run")
+
 def checkKey(val):
     quoteCounter = 0
     for i in val:
         if i == '"':
             quoteCounter += 1
     if quoteCounter == 2:
-        return 0
-    elif quoteCounter < 2:
-        return 4
-    elif quoteCounter > 2:
-        return 3
+        return True
+    else:
+        return False
     
 
 

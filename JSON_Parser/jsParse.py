@@ -2,7 +2,8 @@ import sys
 
 fileContent = ''
 for line in sys.stdin:
-    fileContent += line 
+    fileContent += line
+    print(line)
 
 
 def bracketCheck(file):

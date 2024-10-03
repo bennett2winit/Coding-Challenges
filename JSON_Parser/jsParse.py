@@ -64,6 +64,8 @@ def keyCheck(file):
                 print(f"Value Error in line {keyCount}")
                 return 6
                 break
+        elif key == True and i == "{":
+            getBrackets(file[(file.index(i) + 1):], keyCount)
         elif key == True and i != ',':
             valueVal += i
     # The final conditional checks to see if, after all the resets, key and value are BOTH true
@@ -96,7 +98,22 @@ def checkKey(val):
     else:
         return False
     
-
+def getBrackets(file, lineNo):
+    info = ''
+    for letter in file:
+        print(letter)
+        if letter == '}':
+            break
+        elif letter == '{':
+            getBrackets(file[(file.index(letter) + 1):], lineNo)
+        else:
+            info += letter
+    brack = bracketCheck(info)
+    keyNum = keyCheck(info)
+    if brack > 0 or keyNum > 0:
+        print("invalid JSON")
+        print(f"error on line {lineNo}")
+        exit
 
 main(fileContent)
 

@@ -4,6 +4,7 @@ fileContent = ''
 for line in sys.stdin:
     fileContent += line
 
+print(fileContent)
 def main(file):
     bracket = bracketCheck(file)
     keyValid = keyCheck(file)
